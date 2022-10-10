@@ -1,0 +1,15 @@
+================================================================
+jenkins_public_ip="4.240.1.94"
+acr_password="B7MJUPTOVQEN1SDDx7QebXbCL+TUdWbT"
+acr_registry_server="sbinstallation39139.azurecr.io"
+acr_username="sbinstallation39139"
+storage_account_name="sbinstallation39139"
+storage_account_key="a7B70PJlG/XEHePEikPWfFoxmAwjT5GgKvwXpJhApsB3KL2/r3yBqskgS8Vaap6uip16aQpgsxoh+ASt57ovKA=="
+storage_account_endpoint="https://sbinstallation39139.blob.core.windows.net/"
+storage_account_sas_token="?ss=bqtf&spr=https&sp=rwdlacup&sv=2017-04-17&sig=TRrPyneIXmkBzwzes1Kx%2BQelChUGxJAV5TRRLsBR8tc%3D&srt=sco&se=2023-10-10T10%3A10%3A30Z"
+jenkins=10.0.1.4
+kp=10.0.1.5
+dp=10.0.1.6
+yarn=10.0.1.7
+db=10.0.1.8
+others=10.0.1.9

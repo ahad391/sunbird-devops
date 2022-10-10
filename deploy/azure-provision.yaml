@@ -16,15 +16,15 @@
     # MANDATORY TO CHANGE
     # ##############################################################
     version: "3.9"
-    sp_client_id: ""
-    sp_client_secret: ""
-    ssh_public_key_file_location: /home/rajesh_r/deployer.pub
+    sp_client_id: "b57bca1b-19ef-41b8-b2f1-96fc08cb9df8"
+    sp_client_secret: "j8X8Q~30btSHTDfKpKBeKjqK8AMoMNsSaCIq1a75"
+    ssh_public_key_file_location: /home/azureuser/.ssh/id_rsa.pub
     ############### Maxmind licence key ###########################
     # To create license key
     # Goto: https://www.maxmind.com/en/accounts/current/license-key
     # Click: Generate a new license key.
     # ##############################################################
-    geoip_licence_key: ""
+    geoip_licence_key: "FUSpAjpI3lIM"
     # ##############################################################
     # OPTIONAL
     # ##############################################################
@@ -32,7 +32,7 @@
     location: centralindia
     vnet_name: "installation-test-{{ version }}"
     subnet_name: "installation-test-subnet-{{ version }}"
-    storage_account_name: "sbinstallation{{ version | regex_replace('\\.|-', '') }}"
+    storage_account_name: "sbinstallation391{{ version | regex_replace('\\.|-', '') }}"
     vm_names:
       - jenkins
       - kp
@@ -43,7 +43,7 @@
     vm_size: Standard_D4s_v4
     # To get correct verions, run
     # az aks get-versions -l centralindia -o table
-    aks_version: 1.20.7
+    aks_version: 1.24.6
     private_containers:
       - private
       - artifacts
@@ -159,7 +159,7 @@
           - name: default
             count: 4
             vm_size: Standard_D4s_v4
-            type: VirtualMachineScaleSets
+            #type: VirtualMachineScaleSets
             vnet_subnet_id: "{{ subnet.state.id }}"
         tags:
           Environment: installation
@@ -251,44 +251,44 @@
           with_items:
             - {type: 'GeoLite2-City-CSV', prefix: 'zip' }
             - {type: 'GeoLite2-City', prefix: 'tar.gz'}
-        - name: Uploading GeoIP2 to artifacts
-          azure_rm_storageblob:
-            resource_group: "{{ rg_name }}"
-            storage_account_name: "{{ storage_account_name }}"
-            container: artifacts
-            blob: "geoip2_db.{{ item }}"
-            src: "/tmp/geoip2_db.{{ item }}"
-          with_items:
-            - zip
-            - tar.gz
-        - name: Uploading labels
-          azure_rm_storageblob:
-            resource_group: "{{ rg_name }}"
-            storage_account_name: "{{ storage_account_name }}"
-            container: label
-            batch_upload_dst: "labels/"
-            batch_upload_src: "../utils/portal/labels/"
-            state: present
-        - name: Unarchive plugins
-          unarchive:
-            src: "https://sunbirdpublic.blob.core.windows.net/installation/content-plugins.zip"
-            dest: /tmp/
-            creates: /tmp/content-plugins
-            remote_src: yes
-          tags:
-            - plugins
-        - name: Uploading plugins
-          azure_rm_storageblob:
-            resource_group: "{{ rg_name }}"
-            storage_account_name: "{{ storage_account_name }}"
-            container: contents
-            batch_upload_dst: "rajesh-plugins/"
-            batch_upload_src: "/tmp/content-plugins/"
-            state: present
-          tags:
-            - plugins
-      tags:
-        - storage
+       # - name: Uploading GeoIP2 to artifacts
+       #   azure_rm_storageblob:
+       #     resource_group: "{{ rg_name }}"
+       #     storage_account_name: "{{ storage_account_name }}"
+       #     container: artifacts
+       #     blob: "geoip2_db.{{ item }}"
+       #     src: "/tmp/geoip2_db.{{ item }}"
+       #   with_items:
+       #     - zip
+       #     - tar.gz
+        #- name: Uploading labels
+          #azure_rm_storageblob:
+            #resource_group: "{{ rg_name }}"
+            #storage_account_name: "{{ storage_account_name }}"
+            #container: label
+            #batch_upload_dst: "labels/"
+            #batch_upload_src: "../utils/portal/labels/"
+            #state: present
+        #- name: Unarchive plugins
+        #  unarchive:
+        #    src: "https://sunbirdpublic.blob.core.windows.net/installation/content-plugins.zip"
+        #    dest: /tmp/
+        #    creates: /tmp/content-plugins
+        #    remote_src: yes
+        #  tags:
+        #    - plugins
+       # - name: Uploading plugins
+       #   azure_rm_storageblob:
+       #     resource_group: "{{ rg_name }}"
+       #     storage_account_name: "{{ storage_account_name }}"
+       #     container: contents
+       #     batch_upload_dst: "rajesh-plugins/"
+       #     batch_upload_src: "/tmp/content-plugins/"
+       #     state: present
+       #   tags:
+       #     - plugins
+      #tags:
+      #  - storage
     - name: Creating containier registry
       azure_rm_containerregistry:
         name: "{{ storage_account_name }}"
