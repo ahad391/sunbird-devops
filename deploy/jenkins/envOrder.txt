@@ -1,1 +1,4 @@
 dev=0
+staging=1
+pre-production=2
+production=3
